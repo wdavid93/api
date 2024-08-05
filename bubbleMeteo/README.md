@@ -1,7 +1,3 @@
-# Bubble Weather
-
-![preview](https://user-images.githubusercontent.com/71970846/231820878-15249157-2e82-4c74-a9d8-41ec44fc2eb0.png)
-
 ## Overview 📃
 
 Bubble Weather is a web application that displays real-time weather and weather forecasts using the [open-meteo](https://open-meteo.com/en/docs) weather API. The app allows users to view current, hourly and weekly weather forecasts for any location.
@@ -23,7 +19,7 @@ No installation required, the app can be accessed through any web browser.
 
 ## How to Use Bubble Weather 📱
 
-Open your web browser and go to the [Bubble Weather](https://bubble-weather.netlify.app/) website.
+Open your web browser and go to the [Bubble Weather] website.
 On the home page, you can search for a location using the search bar or use your current location.
 Once you have selected a location, the app will display the current weather information for that location.
 
@@ -33,8 +29,6 @@ The weekly forecast displays the weather information for the next 6 days.
 ## Credits 🧾
 
 The weather data is provided by the open-meteo weather API.
-
-The icons used in the app are from [Flaticon](https://flaticon.con).
 
 ## Future Improvements 🚀
 
