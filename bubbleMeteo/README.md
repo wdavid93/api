@@ -52,6 +52,3 @@ Contributions are welcome! To contribute to this project, please follow these st
  - Push your changes to your forked repository
  - Create a pull request.
 
-## Feedback ✉️
-
-If you have any feedback or need support using Bubble Weather, please email us at emmanuelekopimo@gmail.com
