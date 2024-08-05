@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prévisions Météo / Weather Forecast</title>
+    <style>
+        /* Style global pour la page */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f8ff;
+            color: #333;
+        }
+        /* Conteneur principal pour centrer le contenu */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        /* Style pour le titre principal */
+        h1 {
+            text-align: center;
+            color: #1e90ff;
+            margin-bottom: 20px;
+        }
+        /* Style pour le formulaire */
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        /* Style pour les labels et listes déroulantes */
+        label {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            max-width: 300px;
+            border: 2px solid #1e90ff;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #1e90ff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #1c86ee;
+        }
+        /* Style pour les informations météo */
+        #weather-info {
+            text-align: center;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        /* Style pour les images météo */
+        .weather-icon {
+            width: 150px;
+            height: 150px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        /* Style pour les paragraphes */
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Conteneur principal pour la mise en page -->
+    <div class="container">
+        <!-- Titre principal en français et anglais -->
+        <h1>Prévisions Météo / Weather Forecast</h1>
+
+        <!-- Formulaire pour sélectionner la ville -->
+        <form id="city-form">
+            <!-- Etiquette en français et anglais pour la liste déroulante de la ville -->
+            <label for="city-select">Choisissez votre ville / Choose your city:</label>
+            <!-- Liste déroulante pour sélectionner la ville -->
+            <select id="city-select" required>
+                <option value="">Sélectionnez une ville</option>
+            </select>
+            <!-- Bouton pour soumettre le formulaire -->
+            <button type="submit">Obtenir la météo / Get the weather</button>
+        </form>
+
+        <!-- Div pour afficher les informations météorologiques -->
+        <div id="weather-info"></div>
+    </div>
+
+    <script>
+        // URL brute du fichier JSON sur GitHub
+        const jsonUrl = 'https://raw.githubusercontent.com/high54/Communes-France-JSON/master/france.json';
+
+        // Fonction pour charger les communes depuis le fichier JSON distant
+        function loadCities() {
+            fetch(jsonUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erreur de réseau');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Utiliser un Set pour éliminer les doublons basés sur le nom de la commune
+                    const seen = new Set();
+                    const uniqueCities = [];
+
+                    data.forEach(commune => {
+                        if (!seen.has(commune.Nom_commune)) {
+                            seen.add(commune.Nom_commune);
+                            uniqueCities.push(commune);
+                        }
+                    });
+
+                    // Trier les villes par nom
+                    uniqueCities.sort((a, b) => a.Nom_commune.localeCompare(b.Nom_commune));
+                    
+                    const select = document.getElementById('city-select');
+                    // Ajouter les options triées et uniques dans la liste déroulante
+                    uniqueCities.forEach(commune => {
+                        const option = document.createElement('option');
+                        option.value = commune.Nom_commune; // commune.Code_commune_INSEE; // Valeur de l'option
+                        option.text = commune.Nom_commune; // Texte affiché
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Erreur lors du chargement des communes:', error));
+        }
+
+        // Appeler la fonction pour charger les communes
+        loadCities();
+
+        // Ajouter un écouteur d'événement pour la soumission du formulaire
+        document.getElementById('city-form').addEventListener('submit', function(event) {
+            // Empêcher le rechargement de la page lors de la soumission du formulaire
+            event.preventDefault();
+            // Récupérer la valeur sélectionnée dans la liste déroulante (le code INSEE de la ville)
+            const cityCode = document.getElementById('city-select').value;
+            // Appeler la fonction pour obtenir la météo de la ville spécifiée
+            getWeather(cityCode);
+        });
+
+        // Fonction pour obtenir les données météorologiques
+        function getWeather(cityCode) {
+            // Utiliser l'API wttr.in pour obtenir les données météo au format JSON
+            fetch(`https://wttr.in/${cityCode}?format=j1`)
+                .then(response => response.json()) // Convertir la réponse en JSON
+                .then(data => {
+                    // Extraire les informations météorologiques actuelles des données reçues
+                    const weather = data.current_condition[0];
+                    // Déterminer l'URL de l'image en fonction des conditions météorologiques
+                    const weatherDesc = weather.weatherDesc[0].value.toLowerCase();
+                    let weatherImageUrl;
+
+                    // Choisir l'image en fonction des conditions
+                    if (weatherDesc.includes('sunny') || weatherDesc.includes('clear')) {
+                        weatherImageUrl = 'https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_1280.jpg'; // Image ensoleillée
+                    } else if (weatherDesc.includes('cloudy')) {
+                        weatherImageUrl = 'https://cdn.pixabay.com/photo/2024/01/29/17/49/ai-generated-8540500_1280.jpg'; // Image nuageuse
+                    } else if (weatherDesc.includes('rain') || weatherDesc.includes('showers')) {
+                        weatherImageUrl = 'https://cdn.pixabay.com/photo/2020/02/05/09/02/cloud-4820504_1280.jpg'; // Image pluie
+                    } else if (weatherDesc.includes('storm') || weatherDesc.includes('thunderstorm')) {
+                        weatherImageUrl = 'https://cdn.pixabay.com/photo/2015/09/23/08/16/thunder-953118_1280.jpg'; // Image orage
+                    } else {
+                        weatherImageUrl = 'https://cdn.pixabay.com/photo/2016/11/29/04/19/ocean-1867285_1280.jpg'; // Image par défaut
+                    }
+
+                    // Créer une chaîne HTML avec les informations météo
+                    const weatherInfo = `
+                        <div class="weather-info-container">
+                            <h2>Météo pour ${cityCode} / Weather for ${cityCode}</h2>
+                            <p>Température : ${weather.temp_C}°C / Temperature: ${weather.temp_C}°C</p>
+                            <p>Météo : ${weather.weatherDesc[0].value} / Weather: ${weather.weatherDesc[0].value}</p>
+                            <p>Humidité : ${weather.humidity}% / Humidity: ${weather.humidity}%</p>
+                            <p>Vent : ${weather.windspeedKmph} km/h / Wind: ${weather.windspeedKmph} km/h</p>
+                            <!-- Ajouter l'image dynamique en fonction des conditions météo -->
+                            <img src="${weatherImageUrl}" alt="${weatherDesc}" class="weather-icon">
+                        </div>
+                    `;
+                    // Afficher les informations météo dans la div avec l'id 'weather-info'
+                    document.getElementById('weather-info').innerHTML = weatherInfo;
+                })
+                .catch(error => {
+                    // Afficher un message d'erreur en cas de problème lors de la récupération des données météo
+                    document.getElementById('weather-info').innerHTML = `<p>Erreur lors de la récupération de la météo. Veuillez réessayer. / Error retrieving weather data. Please try again.</p>`;
+                });
+        }
+    </script>
+</body>
+</html>

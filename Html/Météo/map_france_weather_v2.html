@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    
+    <title>Carte Météo</title>
+    
+    <style>
+        html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; right: 0; left: 0; }
+        .leaflet-container { font-size: 1rem; }
+    </style>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script>
+        var map = L.map('map').setView([46.603354, 1.888334], 6);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Data by © OpenStreetMap, under ODbL.',
+            maxZoom: 18
+        }).addTo(map);
+
+        var locations = [
+            {coords: [48.8566, 2.3522], popup: "<h4>Météo pour Paris</h4><p>Température : 16°C</p><p>Météo : Clear </p><p>Humidité : 81%</p><p>Vent : 8 km/h</p><img src='https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_1280.jpg' alt='clear ' style='width:100px;height:100px;'>" },
+            {coords: [43.2965, 5.3698], popup: "<h4>Météo pour Marseille</h4><p>Température : 25°C</p><p>Météo : Sunny</p><p>Humidité : 61%</p><p>Vent : 28 km/h</p><img src='https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_1280.jpg' alt='sunny' style='width:100px;height:100px;'>" },
+            {coords: [45.764, 4.8357], popup: "<h4>Météo pour Lyon</h4><p>Température : 23°C</p><p>Météo : Sunny</p><p>Humidité : 61%</p><p>Vent : 11 km/h</p><img src='https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_1280.jpg' alt='sunny' style='width:100px;height:100px;'>" },
+            {coords: [43.6047, 1.4442], popup: "<h4>Météo pour Toulouse</h4><p>Température : 16°C</p><p>Météo : Partly cloudy </p><p>Humidité : 90%</p><p>Vent : 14 km/h</p><img src='https://cdn.pixabay.com/photo/2024/01/29/17/49/ai-generated-8540500_1280.jpg' alt='partly cloudy ' style='width:100px;height:100px;'>" },
+            {coords: [43.7102, 7.262], popup: "<h4>Météo pour Nice</h4><p>Température : 24°C</p><p>Météo : Clear </p><p>Humidité : 54%</p><p>Vent : 10 km/h</p><img src='https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_1280.jpg' alt='clear ' style='width:100px;height:100px;'>" },
+            {coords: [47.2184, -1.5536], popup: "<h4>Météo pour Nantes</h4><p>Température : 16°C</p><p>Météo : Partly cloudy </p><p>Humidité : 94%</p><p>Vent : 7 km/h</p><img src='https://cdn.pixabay.com/photo/2024/01/29/17/49/ai-generated-8540500_1280.jpg' alt='partly cloudy ' style='width:100px;height:100px;'>" },
+            {coords: [48.5734, 7.7521], popup: "<h4>Météo pour Strasbourg</h4><p>Température : 20°C</p><p>Météo : Cloudy </p><p>Humidité : 86%</p><p>Vent : 9 km/h</p><img src='https://cdn.pixabay.com/photo/2024/01/29/17/49/ai-generated-8540500_1280.jpg' alt='cloudy ' style='width:100px;height:100px;'>" },
+            {coords: [43.6119, 3.8772], popup: "<h4>Météo pour Montpellier</h4><p>Température : 22°C</p><p>Météo : Sunny</p><p>Humidité : 66%</p><p>Vent : 16 km/h</p><img src='https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_1280.jpg' alt='sunny' style='width:100px;height:100px;'>" },
+            {coords: [44.8378, -0.5792], popup: "<h4>Météo pour Bordeaux</h4><p>Température : 20°C</p><p>Météo : Cloudy </p><p>Humidité : 71%</p><p>Vent : 6 km/h</p><img src='https://cdn.pixabay.com/photo/2024/01/29/17/49/ai-generated-8540500_1280.jpg' alt='cloudy ' style='width:100px;height:100px;'>" }
+        ];
+
+        locations.forEach(function(location) {
+            var marker = L.marker(location.coords).addTo(map);
+            marker.setIcon(L.AwesomeMarkers.icon({
+                extraClasses: "fa-rotate-0",
+                icon: "info-sign",
+                iconColor: "white",
+                markerColor: "blue",
+                prefix: "glyphicon"
+            }));
+            marker.bindPopup(location.popup);
+        });
+    </script>
+</body>
+</html>

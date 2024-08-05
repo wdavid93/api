@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte Météo et Recherche de Ville</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f8ff;
+            color: #333;
+            display: flex;
+            height: 900px;
+            overflow: hidden;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+            height: 900px;
+        }
+        /* Style pour le conteneur de la carte */
+        #map {
+            width: 100%; /* Ajustez la largeur souhaitée */
+            height: 100%; /* Hauteur complète de la fenêtre */
+            float: right; /* Placer la carte à droite */
+        }
+        .search-panel {
+            /* width: 30%; */
+            padding: 20px;
+            background: #fff;
+            border-left: 2px solid #ddd;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            overflow-y: auto;
+        }
+        h1 {
+            text-align: center;
+            color: #1e90ff;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        label {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            max-width: 300px;
+            border: 2px solid #1e90ff;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #1e90ff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #1c86ee;
+        }
+        #weather-info {
+            text-align: center;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Panneau de recherche -->
+        <div class="search-panel">
+            <h1>Prévisions Météo</h1>
+            <form id="city-form">
+                <label for="city-select">Choisissez votre ville :</label>
+                <select id="city-select" required>
+                    <option value="">Sélectionnez une ville</option>
+                    {% for city in cities_list %}
+                    <option value="{{ city }}">{{ city }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Obtenir la météo</button>
+            </form>
+            <div id="weather-info"></div>
+        </div>
+
+        <!-- Carte -->
+        <div id="map" >{{ map_html|safe }}</div>
+    </div>
+
+    <script>
+        document.getElementById('city-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const cityName = document.getElementById('city-select').value;
+
+            fetch(`/weather`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `city=${cityName}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('weather-info').innerHTML = `<p>${data.error}</p>`;
+                } else {
+                    document.getElementById('weather-info').innerHTML = `
+                        <h2>Météo pour ${cityName}</h2>
+                        <p>Température : ${data.temp_C}°C</p>
+                        <p>Météo : ${data.weather}</p>
+                        <p>Humidité : ${data.humidity}%</p>
+                        <p>Vent : ${data.windspeedKmph} km/h</p>
+                    `;
+                }
+            })
+            .catch(error => {
+                document.getElementById('weather-info').innerHTML = `<p>Erreur lors de la récupération de la météo. Veuillez réessayer.</p>`;
+            });
+        });
+    </script>
+</body>
+</html>

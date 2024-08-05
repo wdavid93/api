@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_2b1a6402139b9c9675603d94825ad4c9 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_2b1a6402139b9c9675603d94825ad4c9" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_2b1a6402139b9c9675603d94825ad4c9 = L.map(
+                "map_2b1a6402139b9c9675603d94825ad4c9",
+                {
+                    center: [46.603354, 1.888334],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 6,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_0623d321bff50ed4de4c3a6730bbcd32 = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca target=\"_blank\" href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\"_blank\" href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_2b1a6402139b9c9675603d94825ad4c9);
+        
+    
+            var marker_67b427b10b9b04a77bc6e6269c91339d = L.marker(
+                [48.8566, 2.3522],
+                {}
+            ).addTo(map_2b1a6402139b9c9675603d94825ad4c9);
+        
+    
+            var icon_1947132f19673715a81263b5bc53c759 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_67b427b10b9b04a77bc6e6269c91339d.setIcon(icon_1947132f19673715a81263b5bc53c759);
+        
+    
+        var popup_2cb9ba9d1ab265514f13135773e3863f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_a22b8e3cc5bae10a4c4de31f66f26f6d = $(`<div id="html_a22b8e3cc5bae10a4c4de31f66f26f6d" style="width: 100.0%; height: 100.0%;">         <div style="text-align:center;">             <h4>Météo pour Paris</h4>             <p>Température : 16°C</p>             <p>Météo : Clear </p>             <p>Humidité : 81%</p>             <p>Vent : 8 km/h</p>             <img src="https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_1280.jpg" alt="clear " style="width:100px;height:100px;">         </div>         </div>`)[0];
+                popup_2cb9ba9d1ab265514f13135773e3863f.setContent(html_a22b8e3cc5bae10a4c4de31f66f26f6d);
+            
+        
+
+        marker_67b427b10b9b04a77bc6e6269c91339d.bindPopup(popup_2cb9ba9d1ab265514f13135773e3863f)
+        ;
+
+        
+    
+    
+            var marker_eb1c2621e33b9510f84acdeef9a94f18 = L.marker(
+                [43.2965, 5.3698],
+                {}
+            ).addTo(map_2b1a6402139b9c9675603d94825ad4c9);
+        
+    
+            var icon_7401007c05a68fca74e9e14cf24448f7 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_eb1c2621e33b9510f84acdeef9a94f18.setIcon(icon_7401007c05a68fca74e9e14cf24448f7);
+        
+    
+        var popup_041629767f761e504329791612b6a0fe = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_0c958d76580ff3a6a3060e3624cff4d2 = $(`<div id="html_0c958d76580ff3a6a3060e3624cff4d2" style="width: 100.0%; height: 100.0%;">         <div style="text-align:center;">             <h4>Météo pour Marseille</h4>             <p>Température : 25°C</p>             <p>Météo : Sunny</p>             <p>Humidité : 61%</p>             <p>Vent : 28 km/h</p>             <img src="https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_1280.jpg" alt="sunny" style="width:100px;height:100px;">         </div>         </div>`)[0];
+                popup_041629767f761e504329791612b6a0fe.setContent(html_0c958d76580ff3a6a3060e3624cff4d2);
+            
+        
+
+        marker_eb1c2621e33b9510f84acdeef9a94f18.bindPopup(popup_041629767f761e504329791612b6a0fe)
+        ;
+
+        
+    
+    
+            var marker_91cfc3e2fce36f7ea40cc0d35508e7ad = L.marker(
+                [45.764, 4.8357],
+                {}
+            ).addTo(map_2b1a6402139b9c9675603d94825ad4c9);
+        
+    
+            var icon_8d32141ee0891cf450d1adb0dd8939f0 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_91cfc3e2fce36f7ea40cc0d35508e7ad.setIcon(icon_8d32141ee0891cf450d1adb0dd8939f0);
+        
+    
+        var popup_560b53bd39e046553bd59e3032748056 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4c1129ca335f3a01dbe996238121ea61 = $(`<div id="html_4c1129ca335f3a01dbe996238121ea61" style="width: 100.0%; height: 100.0%;">         <div style="text-align:center;">             <h4>Météo pour Lyon</h4>             <p>Température : 23°C</p>             <p>Météo : Sunny</p>             <p>Humidité : 61%</p>             <p>Vent : 11 km/h</p>             <img src="https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_1280.jpg" alt="sunny" style="width:100px;height:100px;">         </div>         </div>`)[0];
+                popup_560b53bd39e046553bd59e3032748056.setContent(html_4c1129ca335f3a01dbe996238121ea61);
+            
+        
+
+        marker_91cfc3e2fce36f7ea40cc0d35508e7ad.bindPopup(popup_560b53bd39e046553bd59e3032748056)
+        ;
+
+        
+    
+    
+            var marker_51cbe142e1d8390b1f6868cfa17e8258 = L.marker(
+                [43.6047, 1.4442],
+                {}
+            ).addTo(map_2b1a6402139b9c9675603d94825ad4c9);
+        
+    
+            var icon_2d2f45f6a71a731764ee92eea9d473ed = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_51cbe142e1d8390b1f6868cfa17e8258.setIcon(icon_2d2f45f6a71a731764ee92eea9d473ed);
+        
+    
+        var popup_eaf6235b4c171ebbb287375d3a79e7ec = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_f2174c9fa54220113dac2679cd55c1b4 = $(`<div id="html_f2174c9fa54220113dac2679cd55c1b4" style="width: 100.0%; height: 100.0%;">         <div style="text-align:center;">             <h4>Météo pour Toulouse</h4>             <p>Température : 16°C</p>             <p>Météo : Partly cloudy </p>             <p>Humidité : 90%</p>             <p>Vent : 14 km/h</p>             <img src="https://cdn.pixabay.com/photo/2024/01/29/17/49/ai-generated-8540500_1280.jpg" alt="partly cloudy " style="width:100px;height:100px;">         </div>         </div>`)[0];
+                popup_eaf6235b4c171ebbb287375d3a79e7ec.setContent(html_f2174c9fa54220113dac2679cd55c1b4);
+            
+        
+
+        marker_51cbe142e1d8390b1f6868cfa17e8258.bindPopup(popup_eaf6235b4c171ebbb287375d3a79e7ec)
+        ;
+
+        
+    
+    
+            var marker_1cd6f4761e33b42ef5253486bc774fec = L.marker(
+                [43.7102, 7.262],
+                {}
+            ).addTo(map_2b1a6402139b9c9675603d94825ad4c9);
+        
+    
+            var icon_ea952263ed05c4c8163bcca0464240d6 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_1cd6f4761e33b42ef5253486bc774fec.setIcon(icon_ea952263ed05c4c8163bcca0464240d6);
+        
+    
+        var popup_cabf034161666b2e3e354df9b246c891 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_adb49f7caba4fe4efbee101996623a1d = $(`<div id="html_adb49f7caba4fe4efbee101996623a1d" style="width: 100.0%; height: 100.0%;">         <div style="text-align:center;">             <h4>Météo pour Nice</h4>             <p>Température : 24°C</p>             <p>Météo : Clear </p>             <p>Humidité : 54%</p>             <p>Vent : 10 km/h</p>             <img src="https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_1280.jpg" alt="clear " style="width:100px;height:100px;">         </div>         </div>`)[0];
+                popup_cabf034161666b2e3e354df9b246c891.setContent(html_adb49f7caba4fe4efbee101996623a1d);
+            
+        
+
+        marker_1cd6f4761e33b42ef5253486bc774fec.bindPopup(popup_cabf034161666b2e3e354df9b246c891)
+        ;
+
+        
+    
+    
+            var marker_c2771afed4d775f1cf5ba2a10bd2964f = L.marker(
+                [47.2184, -1.5536],
+                {}
+            ).addTo(map_2b1a6402139b9c9675603d94825ad4c9);
+        
+    
+            var icon_a70068c6cbeafc640a480370ccb24a8a = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_c2771afed4d775f1cf5ba2a10bd2964f.setIcon(icon_a70068c6cbeafc640a480370ccb24a8a);
+        
+    
+        var popup_5f47648da48a3d4704432c32d549c799 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_50c9199e7d75017771a18ab9975641d9 = $(`<div id="html_50c9199e7d75017771a18ab9975641d9" style="width: 100.0%; height: 100.0%;">         <div style="text-align:center;">             <h4>Météo pour Nantes</h4>             <p>Température : 16°C</p>             <p>Météo : Partly cloudy </p>             <p>Humidité : 94%</p>             <p>Vent : 7 km/h</p>             <img src="https://cdn.pixabay.com/photo/2024/01/29/17/49/ai-generated-8540500_1280.jpg" alt="partly cloudy " style="width:100px;height:100px;">         </div>         </div>`)[0];
+                popup_5f47648da48a3d4704432c32d549c799.setContent(html_50c9199e7d75017771a18ab9975641d9);
+            
+        
+
+        marker_c2771afed4d775f1cf5ba2a10bd2964f.bindPopup(popup_5f47648da48a3d4704432c32d549c799)
+        ;
+
+        
+    
+    
+            var marker_14563a3d8c28de4f2d669ce33981af34 = L.marker(
+                [48.5734, 7.7521],
+                {}
+            ).addTo(map_2b1a6402139b9c9675603d94825ad4c9);
+        
+    
+            var icon_92ecc77379d742f0124331a936fddf12 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_14563a3d8c28de4f2d669ce33981af34.setIcon(icon_92ecc77379d742f0124331a936fddf12);
+        
+    
+        var popup_9f461df41bdd8cc7a8b1fc358d33bed3 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_f55a24806d1939b1418c1b42a66f631b = $(`<div id="html_f55a24806d1939b1418c1b42a66f631b" style="width: 100.0%; height: 100.0%;">         <div style="text-align:center;">             <h4>Météo pour Strasbourg</h4>             <p>Température : 20°C</p>             <p>Météo : Cloudy </p>             <p>Humidité : 86%</p>             <p>Vent : 9 km/h</p>             <img src="https://cdn.pixabay.com/photo/2024/01/29/17/49/ai-generated-8540500_1280.jpg" alt="cloudy " style="width:100px;height:100px;">         </div>         </div>`)[0];
+                popup_9f461df41bdd8cc7a8b1fc358d33bed3.setContent(html_f55a24806d1939b1418c1b42a66f631b);
+            
+        
+
+        marker_14563a3d8c28de4f2d669ce33981af34.bindPopup(popup_9f461df41bdd8cc7a8b1fc358d33bed3)
+        ;
+
+        
+    
+    
+            var marker_052809df0843f950c0045fc164380437 = L.marker(
+                [43.6119, 3.8772],
+                {}
+            ).addTo(map_2b1a6402139b9c9675603d94825ad4c9);
+        
+    
+            var icon_47a85379f388f9d976bf264bc3f3627f = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_052809df0843f950c0045fc164380437.setIcon(icon_47a85379f388f9d976bf264bc3f3627f);
+        
+    
+        var popup_8ed8a3b456ab0afa73919ac60e95ff17 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_388ca10cf3207d22b4bdce117815d49a = $(`<div id="html_388ca10cf3207d22b4bdce117815d49a" style="width: 100.0%; height: 100.0%;">         <div style="text-align:center;">             <h4>Météo pour Montpellier</h4>             <p>Température : 22°C</p>             <p>Météo : Sunny</p>             <p>Humidité : 66%</p>             <p>Vent : 16 km/h</p>             <img src="https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_1280.jpg" alt="sunny" style="width:100px;height:100px;">         </div>         </div>`)[0];
+                popup_8ed8a3b456ab0afa73919ac60e95ff17.setContent(html_388ca10cf3207d22b4bdce117815d49a);
+            
+        
+
+        marker_052809df0843f950c0045fc164380437.bindPopup(popup_8ed8a3b456ab0afa73919ac60e95ff17)
+        ;
+
+        
+    
+    
+            var marker_ac7a2a8095627aa24e552393ae76fb7f = L.marker(
+                [44.8378, -0.5792],
+                {}
+            ).addTo(map_2b1a6402139b9c9675603d94825ad4c9);
+        
+    
+            var icon_32aa113af58926e84626fc212a3fb645 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_ac7a2a8095627aa24e552393ae76fb7f.setIcon(icon_32aa113af58926e84626fc212a3fb645);
+        
+    
+        var popup_75a08868540091d2125d18c59c5ed825 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_9a3fbb77792f7e0e4ac0406b89be7ae9 = $(`<div id="html_9a3fbb77792f7e0e4ac0406b89be7ae9" style="width: 100.0%; height: 100.0%;">         <div style="text-align:center;">             <h4>Météo pour Bordeaux</h4>             <p>Température : 20°C</p>             <p>Météo : Cloudy </p>             <p>Humidité : 71%</p>             <p>Vent : 6 km/h</p>             <img src="https://cdn.pixabay.com/photo/2024/01/29/17/49/ai-generated-8540500_1280.jpg" alt="cloudy " style="width:100px;height:100px;">         </div>         </div>`)[0];
+                popup_75a08868540091d2125d18c59c5ed825.setContent(html_9a3fbb77792f7e0e4ac0406b89be7ae9);
+            
+        
+
+        marker_ac7a2a8095627aa24e552393ae76fb7f.bindPopup(popup_75a08868540091d2125d18c59c5ed825)
+        ;
+
+        
+    
+    
+            var marker_245a9160e80c85a013f975cd306f848a = L.marker(
+                [50.6292, 3.0573],
+                {}
+            ).addTo(map_2b1a6402139b9c9675603d94825ad4c9);
+        
+    
+            var icon_93de0b514b3f9349091ed8c56b75b92c = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_245a9160e80c85a013f975cd306f848a.setIcon(icon_93de0b514b3f9349091ed8c56b75b92c);
+        
+    
+        var popup_f3dca375d2fd474bf6bb306a58bdb3b1 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_94cd7a051af05d5aaa41bb75dc6803f0 = $(`<div id="html_94cd7a051af05d5aaa41bb75dc6803f0" style="width: 100.0%; height: 100.0%;">         <div style="text-align:center;">             <h4>Météo pour Lille</h4>             <p>Température : 16°C</p>             <p>Météo : Mist</p>             <p>Humidité : 95%</p>             <p>Vent : 12 km/h</p>             <img src="https://cdn.pixabay.com/photo/2016/11/29/04/19/ocean-1867285_1280.jpg" alt="mist" style="width:100px;height:100px;">         </div>         </div>`)[0];
+                popup_f3dca375d2fd474bf6bb306a58bdb3b1.setContent(html_94cd7a051af05d5aaa41bb75dc6803f0);
+            
+        
+
+        marker_245a9160e80c85a013f975cd306f848a.bindPopup(popup_f3dca375d2fd474bf6bb306a58bdb3b1)
+        ;
+
+        
+    
+</script>
+</html>

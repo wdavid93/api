@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prévisions Météo / Weather Forecast</title>
+    <style>
+        /* Style basique pour la page */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #weather-info {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Titre principal en français et anglais -->
+    <h1>Prévisions Météo / Weather Forecast</h1>
+
+    <!-- Formulaire pour saisir le nom de la ville -->
+    <form id="city-form">
+        <!-- Etiquette en français et anglais pour le champ de saisie de la ville -->
+        <label for="city">Entrez votre ville / Enter your city:</label>
+        <!-- Champ de saisie pour le nom de la ville -->
+        <input type="text" id="city" name="city" required>
+        <!-- Bouton pour soumettre le formulaire -->
+        <button type="submit">Obtenir la météo / Get the weather</button>
+    </form>
+
+    <!-- Div pour afficher les informations météorologiques -->
+    <div id="weather-info"></div>
+
+    <script>
+        // Ajouter un écouteur d'événement pour la soumission du formulaire
+        document.getElementById('city-form').addEventListener('submit', function(event) {
+            // Empêcher le rechargement de la page lors de la soumission du formulaire
+            event.preventDefault();
+            // Récupérer la valeur saisie dans le champ de texte (le nom de la ville)
+            const city = document.getElementById('city').value;
+            // Appeler la fonction pour obtenir les coordonnées de la ville
+            getCoordinates(city);
+        });
+
+        // Fonction pour obtenir les coordonnées géographiques de la ville
+        function getCoordinates(city) {
+            const geocodingApiUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=fr&format=json`;
+
+            fetch(geocodingApiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erreur HTTP : ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Données de géocodage reçues :', data);
+                    if (data.results && data.results.length > 0) {
+                        const { latitude, longitude } = data.results[0];
+                        getWeather(latitude, longitude, city);
+                    } else {
+                        document.getElementById('weather-info').innerHTML = `<p>Ville non trouvée. Veuillez vérifier l'orthographe et réessayer. / City not found. Please check the spelling and try again.</p>`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la récupération des coordonnées :', error);
+                    document.getElementById('weather-info').innerHTML = `<p>Erreur lors de la récupération des coordonnées. Veuillez réessayer. / Error retrieving coordinates. Please try again.</p>`;
+                });
+        }
+
+        // Fonction pour obtenir les données météorologiques
+        function getWeather(latitude, longitude, city) {
+            const weatherApiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`;
+
+            fetch(weatherApiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erreur HTTP : ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Données météorologiques reçues :', data);
+                    const weather = data.current_weather;
+                    const weatherDescription = getWeatherDescription(weather.weathercode);
+                    const weatherInfo = `
+                        <h2>Météo pour ${city} / Weather for ${city}</h2>
+                        <p>Température : ${weather.temperature}°C / Temperature: ${weather.temperature}°C</p>
+                        <p>Météo : ${weatherDescription} / Weather: ${weatherDescription}</p>
+                        <p>Humidité : ${weather.humidity || 'Non disponible'}% / Humidity: ${weather.humidity || 'Not available'}</p>
+                        <p>Vent : ${weather.windspeed} km/h / Wind: ${weather.windspeed} km/h</p>
+                    `;
+                    document.getElementById('weather-info').innerHTML = weatherInfo;
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la récupération de la météo :', error);
+                    document.getElementById('weather-info').innerHTML = `<p>Erreur lors de la récupération de la météo. Veuillez réessayer. / Error retrieving weather data. Please try again.</p>`;
+                });
+        }
+
+        // Fonction pour obtenir la description des conditions météorologiques à partir du code météo
+        function getWeatherDescription(code) {
+            const descriptions = {
+                0: "Ciel dégagé / Clear sky",
+                1: "Quelques nuages / Few clouds",
+                2: "Nuages épars / Scattered clouds",
+                3: "Nuages épars / Broken clouds",
+                4: "Couvert / Overcast",
+                5: "Brouillard / Fog",
+                6: "Pluie légère / Light rain",
+                7: "Pluie modérée / Moderate rain",
+                8: "Pluie forte / Heavy rain",
+                9: "Orage / Thunderstorm",
+                10: "Neige légère / Light snow",
+                11: "Neige modérée / Moderate snow",
+                12: "Neige forte / Heavy snow",
+                13: "Pluie verglaçante / Freezing rain",
+                14: "Grêle / Hail",
+                15: "Tempête de sable / Sandstorm",
+                16: "Tempête de poussière / Duststorm",
+                17: "Vent fort / Strong wind",
+                18: "Brouillard épais / Dense fog"
+                // Ajoutez plus de codes si nécessaire
+            };
+            return descriptions[code] || "Condition inconnue / Unknown condition";
+        }
+    </script>
+</body>
+</html>
