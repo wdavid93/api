@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--SEO-->
+    <meta name="application-name" content="Bubble Weather">
+    <meta name="author" content="emmanuelekopimo Emmanuel Ekopimo Akpan">
+    <meta name="description"
+        content="A weather web app using the Open-Meteo weather API to display realtime weather data and weather forecast.">
+    <meta name="keywords" content="weather, Bubble, bubble weather, open-meteo, open meteo weather, weather app">
+    <!--Facebook-->
+    <meta property="og:url" content="https://bubble-weather.netlify.app">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Bubble Weather">
+    <meta property="og:image" content="https://bubble-weather.netlify.app/icons/preview.png">
+    <meta property="og:description"
+        content="A weather web app using the Open-Meteo weather API to display realtime weather data and weather forecast.">
+    <meta property="og:site_name" content="Bubble Weather">
+    <meta property="og:locale" content="en_US">
+    <meta property="article:author" content="">
+    <!--Twitter-->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@emmanuelekopimo">
+    <meta name="twitter:creator" content="@emmanuelekopimo">
+    <meta name="twitter:url" content="https://bubble-weather.netlify.app">
+    <meta name="twitter:title" content="Bubble Weather">
+    <meta name="twitter:description"
+        content="A weather web app using the Open-Meteo weather API to display realtime weather data and weather forecast.">
+    <meta name="twitter:image" content="https://bubble-weather.netlify.app/icons/preview.png">
+    <!--Google Schema-->
+    <meta itemprop="name" content="Bubble Weather">
+    <meta itemprop="description"
+        content="A weather web app using the Open-Meteo weather API to display realtime weather data and weather forecast.">
+    <meta itemprop="image" content="https://bubble-weather.netlify.app/icons/preview.png">
+    <!--Mobile Web app IOS and android-->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="white">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <!--Web app ios icons-->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+
+    <link rel="icon" href="./icons/bubbles.png">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./icons.css">
+    <link rel="stylesheet" href="./style/addtohomescreen.css" type="text/css">
+    <script src="./src/addtohomescreen.js" type="text/javascript"></script>
+    <script>
+        if (
+            (("standalone" in window.navigator) && !window.navigator.standalone) //ios
+            ||
+            (window.matchMedia('display-mode: standalone').matches) //android
+        ) {
+            addToHomeScreen();
+        }
+    </script>
+    <script src="./script.js" defer></script>
+    <script src="./style.js" defer></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2917341227014328"
+        crossorigin="anonymous"></script>
+    <title>Bubble Weather</title>
+</head>
+
+<body>
+    <header class="header card-opaque">
+        <a href="https://github.com/wdavid93" target="_blank">
+            <img src="./icons/header.png" alt="bubble weather icon" class="bubble-icon">
+        </a>
+        <div class="location-bar card-opaque">
+            <img src="./icons/building.png" alt="city icon" class="icon-default">
+            <input title="Location search bar" type="text" name="search-bar" id="" class="search-bar"
+                placeholder="Search for your city">
+            <img src="./icons/loading.gif" alt="done icon" class="icon-default current-action">
+            <div class="card-opaque drop-down">
+                <div class="drop-down-item">
+                    Start typing to search for your city
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <section class="home">
+            <!-- Current weather section-->
+            <section class="current-area area full-card">
+                <p class="section-title">Now</p>
+                <div class="card fill current">
+                    <div class="top-row">
+                        <img src="./icons/weather/sun.png" alt="weather icon" class="current-weather-icon">
+                        <span class="temperature-container">
+                            <span class="temperature current">20</span>
+                            <sup>৹</sup>
+                            C
+                        </span>
+                    </div>
+                    <div class="bottom-row">
+                        <div class="component-card flat">
+                            <img src="./icons/wind.png" alt="weather icon" class="icon-component">
+                            <p class="detail wind">3 Km/h</p>
+                            <p class="detail">Wind Speed</p>
+                        </div>
+                        <div class="component-card flat">
+                            <img src="./icons/thermometer.png" alt="weather icon" class="icon-component">
+                            <p class="detail temperature-range">
+                                18<sup class="detail">৹</sup> /
+                                23<sup class="detail">৹</sup></p>
+                            <p class="detail temp">Temperature</p>
+                        </div>
+                        <div class="component-card flat">
+                            <img src="./icons/humidity.png" alt="weather icon" class="icon-component">
+                            <p class="detail rain">80 %</p>
+                            <p class="detail">Precipitation</p>
+                        </div>
+                    </div>
+                    <div class="date-display detail dark"></div>
+                </div>
+            </section>
+
+            <!--Weekly weather section-->
+            <section class="weekly-area area full-card">
+                <p class="section-title">6 Days</p>
+                <div class="card fill day">
+                    <div class="day-card flat">
+                        <div class="text-content">
+                            <span class="week-day detail">Sunday</span><br>
+                            <span class="day-temperature detail">
+                                21
+                                <sup class="detail">৹</sup>
+                                C</span>
+                        </div>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather weekly">
+                    </div>
+
+                    <div class="day-card flat">
+                        <div class="text-content">
+                            <span class="week-day detail">Monday</span><br>
+                            <span class="day-temperature detail">
+                                21
+                                <sup class="detail">৹</sup>
+                                C</span>
+                        </div>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather weekly">
+                    </div>
+
+                    <div class="day-card flat">
+                        <div class="text-content">
+                            <span class="week-day detail">Tuesday</span><br>
+                            <span class="day-temperature detail">
+                                21
+                                <sup class="detail">৹</sup>
+                                C</span>
+                        </div>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather weekly">
+                    </div>
+
+                    <div class="day-card flat">
+                        <div class="text-content">
+                            <span class="week-day detail">Wednesday</span><br>
+                            <span class="day-temperature detail">
+                                21
+                                <sup class="detail">৹</sup>
+                                C</span>
+                        </div>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather weekly">
+                    </div>
+
+                    <div class="day-card flat">
+                        <div class="text-content">
+                            <span class="week-day detail">Thursday</span><br>
+                            <span class="day-temperature detail">
+                                21
+                                <sup class="detail">৹</sup>
+                                C</span>
+                        </div>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather weekly">
+                    </div>
+
+                    <div class="day-card flat">
+                        <div class="text-content">
+                            <span class="week-day detail">Friday</span><br>
+                            <span class="day-temperature detail">
+                                21
+                                <sup class="detail">৹</sup>
+                                C
+                            </span>
+                        </div>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather weekly">
+                    </div>
+                </div>
+            </section>
+
+            <section class="hourly-area area scroll-card">
+                <p class="section-title">Hourly</p>
+                <button title="Scroll Left" class="float scroll-left">
+                    <img src="./icons/fi-ss-angle-small-left.svg" alt="weather icon" class="icon-float svg">
+                </button>
+
+                <button title="Scroll Left" class="float scroll-right">
+                    <img src="./icons/fi-ss-angle-small-right.svg" alt="weather icon" class="icon-float svg">
+                </button>
+
+                <div class="scroll-area hour-scroll">
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            12:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            01:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            02:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            03:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            04:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            05:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            06:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            07:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            08:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            09:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            10:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            11:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            12:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            01:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            02:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            03:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            04:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            05:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            06:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            07:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            08:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            09:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            10:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                    <div class="hour-card card">
+                        <span class="hour-time detail dark">
+                            11:00 AM
+                        </span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather hourly">
+                        <span class="hour-temperature detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C
+                        </span>
+                    </div>
+
+                </div>
+            </section>
+            <section class="weekly-area-mobile area">
+                <p class="section-title">6 Days</p>
+                <div class="card day-mobile">
+                    <div class="day-card-mobile">
+                        <span class="week-day-mobile detail dark">Sunday</span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather-mobile weekly">
+                        <span class="day-temperature-mobile detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C</span>
+                    </div>
+                    <hr class="seperator">
+                    <div class="day-card-mobile">
+                        <span class="week-day-mobile detail dark">Monday</span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather-mobile weekly">
+                        <span class="day-temperature-mobile detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C</span>
+                    </div>
+                    <hr class="seperator">
+                    <div class="day-card-mobile">
+                        <span class="week-day-mobile detail dark">Tuesday</span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather-mobile weekly">
+                        <span class="day-temperature-mobile detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C</span>
+                    </div>
+                    <hr class="seperator">
+                    <div class="day-card-mobile">
+                        <span class="week-day-mobile detail dark">Wednesday</span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather-mobile weekly">
+                        <span class="day-temperature-mobile detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C</span>
+                    </div>
+                    <hr class="seperator">
+                    <div class="day-card-mobile">
+                        <span class="week-day-mobile detail dark">Thursday</span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather-mobile weekly">
+                        <span class="day-temperature-mobile detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C</span>
+                    </div>
+                    <hr class="seperator">
+                    <div class="day-card-mobile">
+                        <span class="week-day-mobile detail dark">Friday</span>
+                        <img src="./icons/weather/sun-cloud.png" alt="weather icon" class="icon-weather-mobile weekly">
+                        <span class="day-temperature-mobile detail dark">
+                            21
+                            <sup class="detail dark">৹</sup>
+                            C</span>
+                    </div>
+
+                </div>
+            </section>
+
+        </section>
+
+    </main>
+</body>
+
+</html>

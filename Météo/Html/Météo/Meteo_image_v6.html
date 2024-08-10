@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte Météo et Recherche de Ville</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f8ff;
+            color: #333;
+            display: flex;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+        }
+        #map {
+            width: 70%;
+            height: 100%;
+        }
+        .search-panel {
+            width: 30%;
+            padding: 20px;
+            background: #fff;
+            border-left: 2px solid #ddd;
+        }
+        h1 {
+            text-align: center;
+            color: #1e90ff;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        label {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            max-width: 300px;
+            border: 2px solid #1e90ff;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #1e90ff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #1c86ee;
+        }
+        #weather-info {
+            text-align: center;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .weather-icon {
+            width: 150px;
+            height: 150px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="map"></div>
+        <div class="search-panel">
+            <h1>Prévisions Météo / Weather Forecast</h1>
+            <form id="city-form">
+                <label for="city-select">Choisissez votre ville / Choose your city:</label>
+                <select id="city-select" required>
+                    <option value="">Sélectionnez une ville</option>
+                </select>
+                <button type="submit">Obtenir la météo / Get the weather</button>
+            </form>
+            <div id="weather-info"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script>
+        const top50Cities = [
+            { 'Nom_commune': 'Paris', 'Latitude': 48.8566, 'Longitude': 2.3522 },
+            { 'Nom_commune': 'Marseille', 'Latitude': 43.2965, 'Longitude': 5.3698 },
+            { 'Nom_commune': 'Lyon', 'Latitude': 45.7640, 'Longitude': 4.8357 },
+            { 'Nom_commune': 'Toulouse', 'Latitude': 43.6047, 'Longitude': 1.4442 },
+            { 'Nom_commune': 'Nice', 'Latitude': 43.7102, 'Longitude': 7.2620 },
+            { 'Nom_commune': 'Nantes', 'Latitude': 47.2184, 'Longitude': -1.5536 },
+            { 'Nom_commune': 'Strasbourg', 'Latitude': 48.5734, 'Longitude': 7.7521 },
+            { 'Nom_commune': 'Montpellier', 'Latitude': 43.6119, 'Longitude': 3.8772 },
+            { 'Nom_commune': 'Bordeaux', 'Latitude': 44.8378, 'Longitude': -0.5792 },
+            { 'Nom_commune': 'Lille', 'Latitude': 50.6292, 'Longitude': 3.0573 },
+            // 40 autres villes importantes ici...
+        ];
+
+        const map = L.map('map').setView([46.603354, 1.888334], 6);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        function addWeatherPopup(marker, cityName) {
+            fetch(`https://wttr.in/${cityName}?format=j1`)
+                .then(response => response.json())
+                .then(data => {
+                    const weather = data.current_condition[0];
+                    const popupContent = `
+                        <b>${cityName}</b><br>
+                        Température : ${weather.temp_C}°C<br>
+                        Météo : ${weather.weatherDesc[0].value}<br>
+                        Humidité : ${weather.humidity}%<br>
+                        Vent : ${weather.windspeedKmph} km/h
+                    `;
+                    marker.bindPopup(popupContent);
+                })
+                .catch(error => console.error('Erreur lors de la récupération des données météo:', error));
+        }
+
+        top50Cities.forEach(city => {
+            const marker = L.marker([city.Latitude, city.Longitude]).addTo(map);
+            addWeatherPopup(marker, city.Nom_commune);
+        });
+
+        const jsonUrl = 'https://raw.githubusercontent.com/high54/Communes-France-JSON/master/france.json';
+
+        function loadCities() {
+            fetch(jsonUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erreur de réseau');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const seen = new Set();
+                    const uniqueCities = [];
+
+                    data.forEach(commune => {
+                        if (!seen.has(commune.Nom_commune)) {
+                            seen.add(commune.Nom_commune);
+                            uniqueCities.push(commune);
+                        }
+                    });
+
+                    uniqueCities.sort((a, b) => a.Nom_commune.localeCompare(b.Nom_commune));
+                    
+                    const select = document.getElementById('city-select');
+                    uniqueCities.forEach(commune => {
+                        const option = document.createElement('option');
+                        option.value = commune.Nom_commune;
+                        option.text = commune.Nom_commune;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Erreur lors du chargement des communes:', error));
+        }
+
+        loadCities();
+
+        document.getElementById('city-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const cityName = document.getElementById('city-select').value;
+            getWeather(cityName);
+        });
+
+        function getWeather(cityName) {
+            fetch(`https://wttr.in/${cityName}?format=j1`)
+                .then(response => response.json())
+                .then(data => {
+                    const weather = data.current_condition[0];
+                    const weatherDesc = weather.weatherDesc[0].value.toLowerCase();
+                    let weatherImageUrl;
+
+                    if (weatherDesc.includes('sunny') || weatherDesc.includes('clear')) {
+                        weatherImageUrl = 'https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_1280.jpg';
+                    } else if (weatherDesc.includes('cloudy')) {
+                        weatherImageUrl = 'https://cdn.pixabay.com/photo/2024/01/29/17/49/ai-generated-8540500_1280.jpg';
+                    } else if (weatherDesc.includes('rain') || weatherDesc.includes('showers')) {
+                        weatherImageUrl = 'https://cdn.pixabay.com/photo/2020/02/05/09/02/cloud-4820504_1280.jpg';
+                    } else if (weatherDesc.includes('storm') || weatherDesc.includes('thunderstorm')) {
+                        weatherImageUrl = 'https://cdn.pixabay.com/photo/2015/09/23/08/16/thunder-953118_1280.jpg';
+                    } else {
+                        weatherImageUrl = 'https://cdn.pixabay.com/photo/2016/11/29/04/19/ocean-1867285_1280.jpg';
+                    }
+
+                    const weatherInfo = `
+                        <div class="weather-info-container">
+                            <h2>Météo pour ${cityName} / Weather for ${cityName}</h2>
+                            <p>Température : ${weather.temp_C}°C / Temperature: ${weather.temp_C}°C</p>
+                            <p>Météo : ${weather.weatherDesc[0].value} / Weather: ${weather.weatherDesc[0].value}</p>
+                            <p>Humidité : ${weather.humidity}% / Humidity: ${weather.humidity}%</p>
+                            <p>Vent : ${weather.windspeedKmph} km/h / Wind: ${weather.windspeedKmph} km/h</p>
+                            <img src="${weatherImageUrl}" alt="${weatherDesc}" class="weather-icon">
+                        </div>
+                    `;
+                    document.getElementById('weather-info').innerHTML = weatherInfo;
+                })
+                .catch(error => {
+                    document.getElementById('weather-info').innerHTML = `<p>Erreur lors de la récupération de la météo. Veuillez réessayer. / Error retrieving weather data. Please try again.</p>`;
+                });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prévisions Météo / Weather Forecast</title>
+    <style>
+        /* Style basique pour la page */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #weather-info {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Titre principal en français et anglais -->
+    <h1>Prévisions Météo / Weather Forecast</h1>
+
+    <!-- Formulaire pour saisir le nom de la ville -->
+    <form id="city-form">
+        <!-- Etiquette en français et anglais pour le champ de saisie de la ville -->
+        <label for="city">Entrez votre ville / Enter your city:</label>
+        <!-- Champ de saisie pour le nom de la ville -->
+        <input type="text" id="city" name="city" required>
+        <!-- Bouton pour soumettre le formulaire -->
+        <button type="submit">Obtenir la météo / Get the weather</button>
+    </form>
+
+    <!-- Div pour afficher les informations météorologiques -->
+    <div id="weather-info"></div>
+
+    <script>
+        // Ajouter un écouteur d'événement pour la soumission du formulaire
+        document.getElementById('city-form').addEventListener('submit', function(event) {
+            // Empêcher le rechargement de la page lors de la soumission du formulaire
+            event.preventDefault();
+            // Récupérer la valeur saisie dans le champ de texte (le nom de la ville)
+            const city = document.getElementById('city').value;
+            // Appeler la fonction pour obtenir la météo de la ville spécifiée
+            getWeather(city);
+        });
+
+        // Fonction pour obtenir les données météorologiques
+        function getWeather(city) {
+            // Utiliser l'API wttr.in pour obtenir les données météo au format JSON
+            fetch(`https://wttr.in/${city}?format=j1`)
+                .then(response => response.json()) // Convertir la réponse en JSON
+                .then(data => {
+                    // Extraire les informations météorologiques actuelles des données reçues
+                    const weather = data.current_condition[0];
+                    // Traduire la description météo en français
+                    const weatherDescriptionFr = translateWeatherDescription(weather.weatherDesc[0].value);
+                    // Créer une chaîne HTML avec les informations météo
+                    const weatherInfo = `
+                        <h2>Météo pour ${city} / Weather for ${city}</h2>
+                        <p>Température : ${weather.temp_C}°C / Temperature: ${weather.temp_C}°C</p>
+                        <p>Météo : ${weatherDescriptionFr} / Weather: ${weather.weatherDesc[0].value}</p>
+                        <p>Humidité : ${weather.humidity}% / Humidity: ${weather.humidity}%</p>
+                        <p>Vent : ${weather.windspeedKmph} km/h / Wind: ${weather.windspeedKmph} km/h</p>
+                    `;
+                    // Afficher les informations météo dans la div avec l'id 'weather-info'
+                    document.getElementById('weather-info').innerHTML = weatherInfo;
+                })
+                .catch(error => {
+                    // Afficher un message d'erreur en cas de problème lors de la récupération des données météo
+                    document.getElementById('weather-info').innerHTML = `<p>Erreur lors de la récupération de la météo. Veuillez réessayer. / Error retrieving weather data. Please try again.</p>`;
+                });
+        }
+
+        // Fonction pour traduire la description météo de l'anglais au français
+        function translateWeatherDescription(description) {
+            const translations = {
+                'Sunny': 'Ensoleillé',
+                'Partly cloudy': 'Partiellement nuageux',
+                'Cloudy': 'Nuageux',
+                'Overcast': 'Couvert',
+                'Mist': 'Brume',
+                'Patchy rain possible': 'Possibilité de pluie par endroits',
+                'Patchy rain nearby': 'Pluie éparse à proximité',
+                'Patchy snow possible': 'Possibilité de neige par endroits',
+                'Patchy sleet possible': 'Possibilité de neige fondue par endroits',
+                'Patchy freezing drizzle possible': 'Possibilité de bruine verglaçante par endroits',
+                'Thundery outbreaks possible': 'Possibilité d\'orages',
+                'Blowing snow': 'Neige soufflée',
+                'Blizzard': 'Tempête de neige',
+                'Fog': 'Brouillard',
+                'Freezing fog': 'Brouillard givrant',
+                'Patchy light drizzle': 'Légère bruine par endroits',
+                'Light drizzle': 'Légère bruine',
+                'Freezing drizzle': 'Bruine verglaçante',
+                'Heavy freezing drizzle': 'Forte bruine verglaçante',
+                'Patchy light rain': 'Légère pluie par endroits',
+                'Light rain': 'Légère pluie',
+                'Moderate rain at times': 'Pluie modérée par moments',
+                'Moderate rain': 'Pluie modérée',
+                'Heavy rain at times': 'Forte pluie par moments',
+                'Heavy rain': 'Forte pluie',
+                'Light freezing rain': 'Pluie verglaçante légère',
+                'Moderate or heavy freezing rain': 'Pluie verglaçante modérée ou forte',
+                'Light sleet': 'Légère neige fondue',
+                'Moderate or heavy sleet': 'Neige fondue modérée ou forte',
+                'Patchy light snow': 'Légère neige par endroits',
+                'Light snow': 'Légère neige',
+                'Patchy moderate snow': 'Neige modérée par endroits',
+                'Moderate snow': 'Neige modérée',
+                'Patchy heavy snow': 'Forte neige par endroits',
+                'Heavy snow': 'Forte neige',
+                'Ice pellets': 'Granules de glace',
+                'Light rain shower': 'Averse de pluie légère',
+                'Moderate or heavy rain shower': 'Averse de pluie modérée ou forte',
+                'Torrential rain shower': 'Averse de pluie torrentielle',
+                'Light sleet showers': 'Averse de neige fondue légère',
+                'Moderate or heavy sleet showers': 'Averse de neige fondue modérée ou forte',
+                'Light snow showers': 'Averse de neige légère',
+                'Moderate or heavy snow showers': 'Averse de neige modérée ou forte',
+                'Light showers of ice pellets': 'Averse de granules de glace légère',
+                'Moderate or heavy showers of ice pellets': 'Averse de granules de glace modérée ou forte',
+                'Patchy light rain with thunder': 'Légère pluie par endroits avec tonnerre',
+                'Moderate or heavy rain with thunder': 'Pluie modérée ou forte avec tonnerre',
+                'Patchy light snow with thunder': 'Légère neige par endroits avec tonnerre',
+                'Moderate or heavy snow with thunder': 'Neige modérée ou forte avec tonnerre'
+            };
+            // Retourner la description traduite si elle existe, sinon retourner la description originale
+            return translations[description] || description;
+        }
+    </script>
+</body>
+</html>

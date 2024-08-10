@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prévisions Météo / Weather Forecast</title>
+    <style>
+        /* Style basique pour la page */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #weather-info {
+            margin-top: 20px;
+        }
+        .weather-icon {
+            width: 150px;
+            height: 150px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Titre principal en français et anglais -->
+    <h1>Prévisions Météo / Weather Forecast</h1>
+
+    <!-- Formulaire pour saisir le nom de la ville -->
+    <form id="city-form">
+        <!-- Etiquette en français et anglais pour le champ de saisie de la ville -->
+        <label for="city">Entrez votre ville / Enter your city:</label>
+        <!-- Champ de saisie pour le nom de la ville -->
+        <input type="text" id="city" name="city" required>
+        <!-- Bouton pour soumettre le formulaire -->
+        <button type="submit">Obtenir la météo / Get the weather</button>
+    </form>
+
+    <!-- Div pour afficher les informations météorologiques -->
+    <div id="weather-info"></div>
+
+    <script>
+        // Ajouter un écouteur d'événement pour la soumission du formulaire
+        document.getElementById('city-form').addEventListener('submit', function(event) {
+            // Empêcher le rechargement de la page lors de la soumission du formulaire
+            event.preventDefault();
+            // Récupérer la valeur saisie dans le champ de texte (le nom de la ville)
+            const city = document.getElementById('city').value;
+            // Appeler la fonction pour obtenir la météo de la ville spécifiée
+            getWeather(city);
+        });
+
+        // Fonction pour obtenir les données météorologiques
+        function getWeather(city) {
+            // Utiliser l'API wttr.in pour obtenir les données météo au format JSON
+            fetch(`https://wttr.in/${city}?format=j1`)
+                .then(response => response.json()) // Convertir la réponse en JSON
+                .then(data => {
+                    // Extraire les informations météorologiques actuelles des données reçues
+                    const weather = data.current_condition[0];
+                    // Déterminer l'URL de l'image en fonction des conditions météorologiques
+                    const weatherDesc = weather.weatherDesc[0].value.toLowerCase();
+                    let weatherImageUrl;
+
+                    // Choisir l'image en fonction des conditions
+                    if (weatherDesc.includes('sunny') || weatherDesc.includes('clear')) {
+                        weatherImageUrl = 'https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_1280.jpg'; // Image ensoleillée
+                    } else if (weatherDesc.includes('cloudy')) {
+                        weatherImageUrl = 'https://cdn.pixabay.com/photo/2024/01/29/17/49/ai-generated-8540500_1280.jpg'; // Image nuageuse
+                    } else if (weatherDesc.includes('rain') || weatherDesc.includes('showers')) {
+                        weatherImageUrl = 'https://cdn.pixabay.com/photo/2020/02/05/09/02/cloud-4820504_1280.jpg'; // Image pluie
+                    } else if (weatherDesc.includes('storm') || weatherDesc.includes('thunderstorm')) {
+                        weatherImageUrl = 'https://cdn.pixabay.com/photo/2015/09/23/08/16/thunder-953118_1280.jpg'; // Image orage
+                    } else {
+                        weatherImageUrl = 'https://cdn.pixabay.com/photo/2016/11/29/04/19/ocean-1867285_1280.jpg'; // Image par défaut
+                    }
+
+                    // Créer une chaîne HTML avec les informations météo
+                    const weatherInfo = `
+                        <h2>Météo pour ${city} / Weather for ${city}</h2>
+                        <p>Température : ${weather.temp_C}°C / Temperature: ${weather.temp_C}°C</p>
+                        <p>Météo : ${weather.weatherDesc[0].value} / Weather: ${weather.weatherDesc[0].value}</p>
+                        <p>Humidité : ${weather.humidity}% / Humidity: ${weather.humidity}%</p>
+                        <p>Vent : ${weather.windspeedKmph} km/h / Wind: ${weather.windspeedKmph} km/h</p>
+                        <!-- Ajouter l'image dynamique en fonction des conditions météo -->
+                        <img src="${weatherImageUrl}" alt="${weatherDesc}" class="weather-icon">
+                    `;
+                    // Afficher les informations météo dans la div avec l'id 'weather-info'
+                    document.getElementById('weather-info').innerHTML = weatherInfo;
+                })
+                .catch(error => {
+                    // Afficher un message d'erreur en cas de problème lors de la récupération des données météo
+                    document.getElementById('weather-info').innerHTML = `<p>Erreur lors de la récupération de la météo. Veuillez réessayer. / Error retrieving weather data. Please try again.</p>`;
+                });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prévisions Météo / Weather Forecast</title>
+    <style>
+        /* Style basique pour la page */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #weather-info {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Titre principal en français et anglais -->
+    <h1>Prévisions Météo / Weather Forecast</h1>
+
+    <!-- Formulaire pour saisir le nom de la ville -->
+    <form id="city-form">
+        <!-- Etiquette en français et anglais pour le champ de saisie de la ville -->
+        <label for="city">Entrez votre ville / Enter your city:</label>
+        <!-- Champ de saisie pour le nom de la ville -->
+        <input type="text" id="city" name="city" required>
+        <!-- Bouton pour soumettre le formulaire -->
+        <button type="submit">Obtenir la météo / Get the weather</button>
+    </form>
+
+    <!-- Div pour afficher les informations météorologiques -->
+    <div id="weather-info"></div>
+
+    <script>
+        // Ajouter un écouteur d'événement pour la soumission du formulaire
+        document.getElementById('city-form').addEventListener('submit', function(event) {
+            // Empêcher le rechargement de la page lors de la soumission du formulaire
+            event.preventDefault();
+            // Récupérer la valeur saisie dans le champ de texte (le nom de la ville)
+            const city = document.getElementById('city').value;
+            // Appeler la fonction pour obtenir la météo de la ville spécifiée
+            getWeather(city);
+        });
+
+        // Fonction pour obtenir les données météorologiques
+        function getWeather(city) {
+            // Utiliser l'API wttr.in pour obtenir les données météo au format JSON
+            fetch(`https://wttr.in/${city}?format=j1`)
+                .then(response => response.json()) // Convertir la réponse en JSON
+                .then(data => {
+                    // Extraire les informations météorologiques actuelles des données reçues
+                    const weather = data.current_condition[0];
+                    // Créer une chaîne HTML avec les informations météo
+                    const weatherInfo = `
+                        <h2>Météo pour ${city} / Weather for ${city}</h2>
+                        <p>Température : ${weather.temp_C}°C / Temperature: ${weather.temp_C}°C</p>
+                        <p>Météo : ${weather.weatherDesc[0].value} / Weather: ${weather.weatherDesc[0].value}</p>
+                        <p>Humidité : ${weather.humidity}% / Humidity: ${weather.humidity}%</p>
+                        <p>Vent : ${weather.windspeedKmph} km/h / Wind: ${weather.windspeedKmph} km/h</p>
+                    `;
+                    // Afficher les informations météo dans la div avec l'id 'weather-info'
+                    document.getElementById('weather-info').innerHTML = weatherInfo;
+                })
+                .catch(error => {
+                    // Afficher un message d'erreur en cas de problème lors de la récupération des données météo
+                    document.getElementById('weather-info').innerHTML = `<p>Erreur lors de la récupération de la météo. Veuillez réessayer. / Error retrieving weather data. Please try again.</p>`;
+                });
+        }
+    </script>
+</body>
+</html>

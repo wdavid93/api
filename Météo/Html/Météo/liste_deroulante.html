@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Communes de France</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Choisir une Commune de France</h1>
+    <select id="city-select">
+        <option value="">Sélectionnez une commune</option>
+    </select>
+
+    <script>
+        // URL brute du fichier JSON sur GitHub
+        const jsonUrl = 'https://raw.githubusercontent.com/high54/Communes-France-JSON/master/france.json';
+
+        // Fonction pour charger les communes depuis le fichier JSON distant
+        function loadCities() {
+            fetch(jsonUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erreur de réseau');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const select = document.getElementById('city-select');
+                    // Les données JSON sont dans un tableau d'objets
+                    data.forEach(commune => {
+                        const option = document.createElement('option');
+                        option.value = commune.Code_commune_INSEE; // Valeur de l'option
+                        option.text = commune.Nom_commune; // Texte affiché
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Erreur lors du chargement des communes:', error));
+        }
+
+        // Appeler la fonction pour charger les communes
+        loadCities();
+    </script>
+</body>
+</html>

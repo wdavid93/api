@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <!-- Déclaration du type de document et métadonnées -->
+    <meta charset="UTF-8"> <!-- Encodage des caractères -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Adaptation à la largeur de l'écran -->
+    <title>Carte Météo et Recherche de Ville</title> <!-- Titre de la page -->
+
+    <style>
+        /* Style CSS global pour la page */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Police utilisée pour le texte */
+            margin: 0; /* Marges supprimées pour le corps de la page */
+            padding: 0; /* Espacement supprimé pour le corps de la page */
+            background: #f0f8ff; /* Couleur de fond de la page */
+            color: #333; /* Couleur du texte */
+            display: flex; /* Utilisation de Flexbox pour le layout */
+            height: 900px; /* Hauteur fixe pour le corps */
+            overflow: hidden; /* Masquer les débordements de contenu */
+        }
+        .container {
+            display: flex; /* Utilisation de Flexbox pour le conteneur principal */
+            width: 100%; /* Largeur complète de la fenêtre */
+            height: 900px; /* Hauteur fixe pour le conteneur */
+        }
+        /* Style pour le conteneur de la carte */
+        #map {
+            width: 100%; /* Largeur complète du conteneur */
+            height: 100%; /* Hauteur complète du conteneur */
+            float: right; /* Placer la carte à droite */
+        }
+        /* Style pour le panneau de recherche */
+        .search-panel {
+            /* width: 30%; */ /* Largeur commentée, peut être utilisée si nécessaire */
+            padding: 20px; /* Espacement interne du panneau */
+            background: #fff; /* Couleur de fond du panneau */
+            border-left: 2px solid #ddd; /* Bordure à gauche du panneau */
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* Ombre portée du panneau */
+            height: 100%; /* Hauteur complète du panneau */
+            overflow-y: auto; /* Défilement vertical en cas de débordement */
+        }
+        /* Style pour le titre principal */
+        h1 {
+            text-align: center; /* Alignement centré du texte */
+            color: #1e90ff; /* Couleur du texte */
+            margin-bottom: 20px; /* Marge inférieure */
+        }
+        /* Style pour le formulaire */
+        form {
+            display: flex; /* Utilisation de Flexbox pour le formulaire */
+            flex-direction: column; /* Orientation verticale des éléments */
+            align-items: center; /* Alignement centré des éléments */
+            margin-bottom: 30px; /* Marge inférieure du formulaire */
+        }
+        /* Style pour les labels */
+        label {
+            font-size: 18px; /* Taille de la police du label */
+            margin-bottom: 10px; /* Marge inférieure du label */
+        }
+        /* Style pour les listes déroulantes */
+        select {
+            padding: 10px; /* Espacement interne de la liste déroulante */
+            font-size: 16px; /* Taille de la police */
+            width: 100%; /* Largeur complète du conteneur */
+            max-width: 300px; /* Largeur maximale de la liste déroulante */
+            border: 2px solid #1e90ff; /* Bordure de la liste déroulante */
+            border-radius: 5px; /* Coins arrondis de la liste déroulante */
+            margin-bottom: 10px; /* Marge inférieure de la liste déroulante */
+        }
+        /* Style pour les boutons */
+        button {
+            padding: 10px 20px; /* Espacement interne du bouton */
+            font-size: 16px; /* Taille de la police du bouton */
+            color: #fff; /* Couleur du texte du bouton */
+            background-color: #1e90ff; /* Couleur de fond du bouton */
+            border: none; /* Pas de bordure */
+            border-radius: 5px; /* Coins arrondis du bouton */
+            cursor: pointer; /* Curseur pointer au survol */
+            transition: background-color 0.3s ease; /* Transition de la couleur de fond au survol */
+        }
+        /* Style pour l'état au survol des boutons */
+        button:hover {
+            background-color: #1c86ee; /* Couleur de fond au survol */
+        }
+        /* Style pour les informations météorologiques */
+        #weather-info {
+            text-align: center; /* Alignement centré du texte */
+            background: #fff; /* Couleur de fond */
+            border-radius: 10px; /* Coins arrondis */
+            padding: 20px; /* Espacement interne */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre portée */
+        }
+    </style>
+</head>
+<body>
+    <!-- Conteneur principal pour la mise en page -->
+    <div class="container">
+        <!-- Panneau de recherche -->
+        <div class="search-panel">
+            <h1>Prévisions Météo</h1> <!-- Titre du panneau de recherche -->
+            <form id="city-form">
+                <label for="city-select">Choisissez votre ville :</label> <!-- Label pour la liste déroulante -->
+                <select id="city-select" required>
+                    <option value="">Sélectionnez une ville</option> <!-- Option par défaut -->
+                    {% for city in cities_list %}
+                    <!-- Boucle pour générer les options de ville -->
+                    <option value="{{ city }}">{{ city }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Obtenir la météo</button> <!-- Bouton pour soumettre le formulaire -->
+            </form>
+            <!-- Conteneur pour afficher les informations météo -->
+            <div id="weather-info"></div>
+        </div>
+
+        <!-- Carte -->
+        <div id="map" >{{ map_html|safe }}</div> <!-- Conteneur pour la carte -->
+    </div>
+
+    <script>
+        // Ajouter un écouteur d'événement pour la soumission du formulaire
+        document.getElementById('city-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêcher le rechargement de la page
+            const cityName = document.getElementById('city-select').value; // Récupérer le nom de la ville sélectionnée
+
+            // Envoyer une requête POST pour obtenir les données météo
+            fetch(`/weather`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded' // Type de contenu de la requête
+                },
+                body: `city=${cityName}` // Corps de la requête avec le nom de la ville
+            })
+            .then(response => response.json()) // Convertir la réponse en JSON
+            .then(data => {
+                if (data.error) {
+                    // Afficher un message d'erreur si les données contiennent une erreur
+                    document.getElementById('weather-info').innerHTML = `<p>${data.error}</p>`;
+                } else {
+                    // Afficher les informations météo si les données sont valides
+                    document.getElementById('weather-info').innerHTML = `
+                        <h2>Météo pour ${cityName}</h2>
+                        <p>Température : ${data.temp_C}°C</p>
+                        <p>Météo : ${data.weather}</p>
+                        <p>Humidité : ${data.humidity}%</p>
+                        <p>Vent : ${data.windspeedKmph} km/h</p>
+                    `;
+                }
+            })
+            .catch(error => {
+                // Afficher un message d'erreur en cas de problème avec la requête
+                document.getElementById('weather-info').innerHTML = `<p>Erreur lors de la récupération de la météo. Veuillez réessayer.</p>`;
+            });
+        });
+    </script>
+</body>
+</html>
